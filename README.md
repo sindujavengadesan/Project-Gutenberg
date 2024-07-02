@@ -1,5 +1,5 @@
 # Project-Gutenberg
-Analysis based on the result: 
+_Analysis based on the result:_
 
 The analysis of book popularity based on Kullback-Leibler (KL) divergence characteristics reveals interesting insights. Metrics like Average, Slope, Standard Deviation, Maximum and Number of books with kld higher than top 10% were considered and built for each book. These metrics were then regressed against log(downloads). The average KL divergence (avg_kld) had a positive coefficient, meaning that books with a higher average information reveal typically receive more downloads. This shows that readers enjoy a steady stream of new material. Books with different degrees of information revealed throughout sections are also more popular, according to the positive coefficient for the standard deviation of KL divergence (std_kld), which suggests that readers like the unpredictability and involvement that such variety delivers. However, novels with an excessive information reveal in a single part may be less popular, probably because it disturbs the reading flow, as indicated by the negative coefficient for maximum KL divergence (max_kld). Its interpretation when used alone may be complicated by the slope of KL divergence's (slope_kld) extremely negative coefficient, which may indicate multicollinearity with other KL measurements.
 
@@ -8,39 +8,42 @@ LASSO regression was used to identify the most important predictors of book down
 
 
 
-Detailed Analysis
+**Detailed Analysis**
 
-Regression of KLD characteristics with log(downloads)
+_Regression of KLD characteristics with log(downloads)_
 
-avg_kld: Coefficient: 0.34304126 (positive)
+**avg_kld:** Coefficient: 0.34304126 (positive)
 This positive coefficient suggests that books with a higher average KL divergence tend to have more downloads, on average. This implies that readers might prefer books with a consistent flow of new information revealed throughout the sections
 
-std_kld: Coefficient: 2.62231218 (positive)
+**std_kld:** Coefficient: 2.62231218 (positive)
 This positive coefficient suggests that books with a higher standard deviation of KL divergence tend to be more popular. This indicates that readers might enjoy books that alternate between sections with high and low information reveal, keeping them engaged and surprised.
 
-max_kld: Coefficient: -0.47832542 (negative)
+**max_kld:** Coefficient: -0.47832542 (negative)
 This negative coefficient suggests that books with a very high maximum KL divergence (extreme information reveal in one section) might be slightly less popular on average. This could be because such a drastic information shift might disrupt the reading flow for some readers.
 
-slope_kld: Coefficient: -31.48056701 (negative)
+**slope_kld:** Coefficient: -31.48056701 (negative)
 The slope of KL divergence might be highly correlated with other KLD measures (e.g., average KL divergence) in the data.
 
 
-LASSO shrinkage of KLD measures
+_LASSO shrinkage of KLD measures_
 
-Without Genre:
-Important Features: LASSO identified "avg_kld" (average information reveal) and "max_kld" (maximum information reveal in a section) as the most important features for predicting log(downloads). This suggests that overall information flow and moments of significant new information introduction might be important for book popularity, regardless of genre.
+**Without Genre:**
+Important Features: 
 
-Specific Genre Insights:
+LASSO identified *avg_kld* (average information reveal) and *max_kld* (maximum information reveal in a section) as the most important features for predicting log(downloads). This suggests that overall information flow and moments of significant new information introduction might be important for book popularity, regardless of genre.
+
+**Specific Genre Insights:**
 
 Max_kld Dominance:
-Interestingly, most significant features involve "max_kld" interacting with various genres. This suggests that for many genres (e.g., biography, history, fiction), moments of significant information introduction might be particularly important for downloads.
+Interestingly, most significant features involve *max_kld* interacting with various genres. This suggests that for many genres (e.g., biography, history, fiction), moments of significant information introduction might be particularly important for downloads.
 
-Genre-Specific Patterns: Some specific interaction terms with "avg_kld" might be worth investigating further
+Genre-Specific Patterns: 
+Some specific interaction terms with "avg_kld" might be worth investigating further.
 avg_kld - description, travel - This could indicate that a consistent flow of new information is important for travel books with descriptions.
 avg_kld - fiction variations - These might reveal how information reveal patterns differ across fiction subgenres (juvenile, mystery, etc.).
 
 
-Building book level measures of characteristics of KL Divergence
+## Building book level measures of characteristics of KL Divergence
 
 Characteristics considered:
 Average KL Divergence: Represents the average amount of information revealed per section 
@@ -59,14 +62,14 @@ Appending them to the original data frame after calculation of each metric
 
 
 
-Relating book level KLD measures with log(downloads) by regressing the measures against downloads
+## Relating book level KLD measures with log(downloads) by regressing the measures against downloads
 
 Included Language as a control variable, as downloads can also depend on the language the book was written
 There were 16 languages, and it was encoded using MultiLabelBinarizer
 Languages: 'ang', 'cy', 'de', 'el', 'en', 'enm', 'eo', 'es', 'fr', 'grc', 'kha','la', 'myn', 'pt', 'tl', 'zh'
 
 
-Using LASSO to predict the most important variables that has significant effect on book downloads
+## Using LASSO to predict the most important variables that has significant effect on book downloads
 Genres were stored together in the column “subjects” 
 
 Did extensive data processing to retrieve top 50 genres used
